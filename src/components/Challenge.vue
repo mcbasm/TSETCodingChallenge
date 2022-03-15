@@ -131,6 +131,7 @@ export default class Challenge extends Vue {
                         <input
                             type="text"
                             @mouseleave="price.mouseHoverName = false"
+                            v-on:blur="completePriceEditions(price)"
                             v-if="price.editableName && price.id != 1"
                             v-model="price.name"
                             autofocus
@@ -156,6 +157,7 @@ export default class Challenge extends Vue {
                                 <input
                                     type="number"
                                     @mouseover="price.mouseHoverPrice = true;"
+                                    v-on:blur="completePriceEditions(price)"
                                     v-else
                                     v-model="price.realPrice"
                                     autofocus
