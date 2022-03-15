@@ -109,101 +109,110 @@ export default class Challenge extends Vue {
         <div class="row">
             <div class="col-12 align-right">Total: {{ totalAmount.toFixed(2) }} EUR/kg</div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Price Name</th>
-                    <th scope="col">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                    v-for="price in prices"
-                    :key="price.id"
-                    @mouseleave="completePriceEditions(price)"
-                    v-on:keyup.enter="completePriceEditions(price)"
-                >
-                    <td>
-                        <span
-                            @mouseover="price.mouseHoverName = true"
-                            v-if="!price.editableName || price.id == 1"
-                        >{{ price.name }}</span>
-                        <input
-                            type="text"
-                            @mouseleave="price.mouseHoverName = false"
-                            v-on:blur="completePriceEditions(price)"
-                            v-if="price.editableName && price.id != 1"
-                            v-model="price.name"
-                            autofocus
-                        />
-                        <button
-                            v-if="price.mouseHoverName && price.id != 1"
-                            @click="price.editableName = true;"
-                            class="btn btn-outline-secondary"
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Price Name</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="price in prices"
+                            :key="price.id"
+                            @mouseleave="completePriceEditions(price)"
+                            v-on:keyup.enter="completePriceEditions(price)"
                         >
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <div class="row">
-                            <div class="col-12">
+                            <td>
+                                <span
+                                    @mouseover="price.mouseHoverName = true"
+                                    v-if="!price.editableName || price.id == 1"
+                                >{{ price.name }}</span>
                                 <input
-                                    v-if="!price.editablePrice"
-                                    @click="price.editablePrice = true;"
-                                    @mouseover="price.mouseHoverPrice = true;"
                                     type="text"
-                                    v-model="price.priceValue"
-                                />
-                                <input
-                                    type="number"
-                                    @mouseover="price.mouseHoverPrice = true;"
+                                    @mouseleave="price.mouseHoverName = false"
                                     v-on:blur="completePriceEditions(price)"
-                                    v-else
-                                    v-model="price.realPrice"
+                                    v-if="price.editableName && price.id != 1"
+                                    v-model="price.name"
                                     autofocus
                                 />
                                 <button
-                                    v-if="price.id != 1 && price.removable && price.mouseHoverPrice"
-                                    @click="removePrice(price)"
-                                    class="btn btn-danger"
+                                    v-if="price.mouseHoverName && price.id != 1"
+                                    @click="price.editableName = true;"
+                                    class="btn btn-outline-secondary"
                                 >
-                                    <i class="fas fa-times"></i>
+                                    <i class="fas fa-edit"></i>
                                 </button>
-                            </div>
-                        </div>
-                        <div class="row" v-if="price.mouseHoverPrice && !price.editablePrice">
-                            <div class="col-12">
-                                <span>{{ price.realPrice }}</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="row">
-            <div class="col-5">
-                <input
-                    :class="{ disabled: !toBeCreated }"
-                    type="text"
-                    placeholder="Insert Name"
-                    @click="toBeCreated = true"
-                    v-model="newName"
-                />
-            </div>
-            <div class="col-5">
-                <input
-                    :class="{ disabled: !toBeCreated }"
-                    type="number"
-                    placeholder="0.0"
-                    step="any"
-                    @click="toBeCreated = true"
-                    v-model="newPrice"
-                />
-            </div>
-            <div class="col-1">
-                <button v-if="toBeCreated" @click="addPrice()" class="btn btn-success">
-                    <i class="fas fa-save"></i>
-                </button>
+                            </td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input
+                                            v-if="!price.editablePrice"
+                                            @click="price.editablePrice = true;"
+                                            @mouseover="price.mouseHoverPrice = true;"
+                                            type="text"
+                                            v-model="price.priceValue"
+                                        />
+                                        <input
+                                            type="number"
+                                            @mouseover="price.mouseHoverPrice = true;"
+                                            v-on:blur="completePriceEditions(price)"
+                                            v-else
+                                            v-model="price.realPrice"
+                                            autofocus
+                                        />
+                                        <button
+                                            v-if="price.id != 1 && price.removable && price.mouseHoverPrice"
+                                            @click="removePrice(price)"
+                                            class="btn btn-danger"
+                                        >
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div
+                                    class="row"
+                                    v-if="price.mouseHoverPrice && !price.editablePrice"
+                                >
+                                    <div class="col-12">
+                                        <span>{{ price.realPrice }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-5">
+                        <input
+                            :class="{
+                                disabled: !toBeCreated
+                            }"
+                            type="text"
+                            placeholder="Insert Name"
+                            @click="toBeCreated = true"
+                            v-model="newName"
+                        />
+                    </div>
+                    <div class="col-5">
+                        <input
+                            :class="{ disabled: !toBeCreated }"
+                            type="number"
+                            placeholder="0.0"
+                            step="any"
+                            @click="toBeCreated = true"
+                            v-model="newPrice"
+                        />
+                    </div>
+                    <div class="col-1">
+                        <button v-if="toBeCreated" @click="addPrice()" class="btn btn-success">
+                            <i class="fas fa-save"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
